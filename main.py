@@ -25,7 +25,6 @@ def welcomeScreen():
     playery = int((SCREENHEIGHT - GAME_SPRITES['player'].get_height())/2)
     messagex = int((SCREENWIDTH - GAME_SPRITES['message'].get_width())/2)
     messagey = int(SCREENHEIGHT*0.13)
-    roof_height = int((SCREENHEIGHT - GAME_SPRITES['player'].get_height())/2)
     basex = 0
     while True:
         for event in pygame.event.get():
@@ -39,7 +38,7 @@ def welcomeScreen():
                 return
             else:
                 SCREEN.blit(GAME_SPRITES['background'], (0, 0))    
-                SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))    
+                #SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))    
                 SCREEN.blit(GAME_SPRITES['message'], (messagex,messagey ))    
                 SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))   
                 SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))  
@@ -86,7 +85,6 @@ def mainGame():
                 sys.exit()
             # TODO here we probably need to define another keyboard input to get down (if no gravity)
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                print(playery)
                 # Reducing the roof boundary: how to set it as if it were soldi?
                 #if playery > 0:
                 if playery > ROOFY + GAME_SPRITES['roof'].get_height():
@@ -120,16 +118,10 @@ def mainGame():
         if playerFlapped:
             playerFlapped = False            
         playerHeight = GAME_SPRITES['player'].get_height()
-        # TODO probably should add roof boundary here
-        print("HI")
-        print(GROUNDY)
-        print(playery)
-        print(playerHeight)
-        print(ROOFY)
-        print("END")
-        
-        old_playery = playery
+
         playery = playery + min(playerVelY, GROUNDY - playery - playerHeight)
+
+        # Added roof boundary
         if playery < ROOFY + GAME_SPRITES['roof'].get_height(): 
             playery = ROOFY + GAME_SPRITES['roof'].get_height()
         
@@ -229,7 +221,7 @@ if __name__ == "__main__":
         pygame.image.load('gallery/sprites/9.png').convert_alpha(),
     )
 
-    GAME_SPRITES['message'] =pygame.image.load('gallery/sprites/kirby_welcome_transp.png').convert_alpha()
+    GAME_SPRITES['message'] =pygame.image.load('gallery/sprites/kirby_welcome.png').convert_alpha()
     GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/floor_cut.png').convert_alpha()
     GAME_SPRITES['roof'] =pygame.image.load('gallery/sprites/roof_cut.png').convert_alpha()
     GAME_SPRITES['pipe'] =(pygame.transform.rotate(pygame.image.load( PIPE).convert_alpha(), 180), 

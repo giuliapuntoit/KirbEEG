@@ -9,7 +9,7 @@ SCREENWIDTH = 900
 SCREENHEIGHT = 600
 SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 GROUNDY = SCREENHEIGHT * .92
-ROOFY = SCREENHEIGHT * 0 - .02
+ROOFY = SCREENHEIGHT * 0 - 10
 GAME_SPRITES = {}
 GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/kirby2_crop.png'
@@ -68,6 +68,7 @@ def mainGame():
 
     pipeVelX = -4
 
+    # playerVelY is what gives the gravity feature
     playerVelY = -9
     playerMaxVelY = 10
     playerMinVelY = -8
@@ -82,6 +83,7 @@ def mainGame():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
                 sys.exit()
+            # TODO here we probably need to define another keyboard input to get down (if no gravity)
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
                 if playery > 0:
                     playerVelY = playerFlapAccv
@@ -99,6 +101,7 @@ def mainGame():
         playerMidPos = playerx + GAME_SPRITES['player'].get_width()/2
         for pipe in upperPipes:
             pipeMidPos = pipe['x'] + GAME_SPRITES['pipe'][0].get_width()/2
+            # TODO probably need to change this + 4 value too
             if pipeMidPos<= playerMidPos < pipeMidPos +4:
                 score +=1
                 print(f"Your score is {score}") 
@@ -111,6 +114,7 @@ def mainGame():
         if playerFlapped:
             playerFlapped = False            
         playerHeight = GAME_SPRITES['player'].get_height()
+        # TODO probably should add roof boundary here
         playery = playery + min(playerVelY, GROUNDY - playery - playerHeight)
 
         # move pipes to the left
@@ -153,6 +157,7 @@ def mainGame():
 
 def isCollide(playerx, playery, upperPipes, lowerPipes):
     # Trying add roof hit
+    # TODO since I changed the GROUNDY variable I need also to change 25 value I think
     if playery> GROUNDY - 25  or playery<0:  # or playery < ROOFY + 25:
         GAME_SOUNDS['hit'].play()
         return True

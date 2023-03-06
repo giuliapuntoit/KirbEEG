@@ -25,6 +25,7 @@ def welcomeScreen():
     playery = int((SCREENHEIGHT - GAME_SPRITES['player'].get_height())/2)
     messagex = int((SCREENWIDTH - GAME_SPRITES['message'].get_width())/2)
     messagey = int(SCREENHEIGHT*0.13)
+    roof_height = int((SCREENHEIGHT - GAME_SPRITES['player'].get_height())/2)
     basex = 0
     while True:
         for event in pygame.event.get():
@@ -68,7 +69,7 @@ def mainGame():
 
     pipeVelX = -4
 
-    # playerVelY is what gives the gravity feature
+    # I think playerVelY is what gives the gravity feature
     playerVelY = -9
     playerMaxVelY = 10
     playerMinVelY = -8
@@ -85,10 +86,15 @@ def mainGame():
                 sys.exit()
             # TODO here we probably need to define another keyboard input to get down (if no gravity)
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
-                if playery > 0:
+                print(playery)
+                # Reducing the roof boundary: how to set it as if it were soldi?
+                #if playery > 0:
+                if playery > ROOFY + GAME_SPRITES['roof'].get_height():
+                    #print(ROOFY, playerHeight)
                     playerVelY = playerFlapAccv
                     playerFlapped = True
-                    GAME_SOUNDS['wing'].play()
+                    # Removed sound when pressing space!
+                    #GAME_SOUNDS['wing'].play()
 
 
         crashTest = isCollide(playerx, playery, upperPipes, lowerPipes) # This function will return true if the player is crashed
@@ -115,7 +121,18 @@ def mainGame():
             playerFlapped = False            
         playerHeight = GAME_SPRITES['player'].get_height()
         # TODO probably should add roof boundary here
+        print("HI")
+        print(GROUNDY)
+        print(playery)
+        print(playerHeight)
+        print(ROOFY)
+        print("END")
+        
+        old_playery = playery
         playery = playery + min(playerVelY, GROUNDY - playery - playerHeight)
+        if playery < ROOFY + GAME_SPRITES['roof'].get_height(): 
+            playery = ROOFY + GAME_SPRITES['roof'].get_height()
+        
 
         # move pipes to the left
         for upperPipe , lowerPipe in zip(upperPipes, lowerPipes):
@@ -156,11 +173,10 @@ def mainGame():
         FPSCLOCK.tick(FPS)
 
 def isCollide(playerx, playery, upperPipes, lowerPipes):
-    # Trying add roof hit
-    # TODO since I changed the GROUNDY variable I need also to change 25 value I think
-    if playery> GROUNDY - 25  or playery<0:  # or playery < ROOFY + 25:
-        GAME_SOUNDS['hit'].play()
-        return True
+    # Removed hit noise when hitting the roof
+    #if playery> GROUNDY - 25  or playery < 0: 
+    #    GAME_SOUNDS['hit'].play()
+    #    return True
     
     for pipe in upperPipes:
         pipeHeight = GAME_SPRITES['pipe'][0].get_height()

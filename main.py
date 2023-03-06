@@ -8,7 +8,8 @@ FPS = 32
 SCREENWIDTH = 900
 SCREENHEIGHT = 600
 SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-GROUNDY = SCREENHEIGHT * 0.8
+GROUNDY = SCREENHEIGHT * .92
+ROOFY = SCREENHEIGHT * 0 - .02
 GAME_SPRITES = {}
 GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/kirby2_crop.png'
@@ -39,7 +40,8 @@ def welcomeScreen():
                 SCREEN.blit(GAME_SPRITES['background'], (0, 0))    
                 SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))    
                 SCREEN.blit(GAME_SPRITES['message'], (messagex,messagey ))    
-                SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))    
+                SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))   
+                SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))  
                 pygame.display.update()
                 FPSCLOCK.tick(FPS)
 
@@ -89,7 +91,9 @@ def mainGame():
 
         crashTest = isCollide(playerx, playery, upperPipes, lowerPipes) # This function will return true if the player is crashed
         if crashTest:
-            return     
+            pipeVelX = 0
+        else:
+            pipeVelX = -4
 
         #check for score
         playerMidPos = playerx + GAME_SPRITES['player'].get_width()/2
@@ -131,7 +135,9 @@ def mainGame():
             SCREEN.blit(GAME_SPRITES['pipe'][0], (upperPipe['x'], upperPipe['y']))
             SCREEN.blit(GAME_SPRITES['pipe'][1], (lowerPipe['x'], lowerPipe['y']))
 
+        # Adding floor and roof
         SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))
+        SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))
         SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))
         myDigits = [int(x) for x in list(str(score))]
         width = 0
@@ -146,7 +152,8 @@ def mainGame():
         FPSCLOCK.tick(FPS)
 
 def isCollide(playerx, playery, upperPipes, lowerPipes):
-    if playery> GROUNDY - 25  or playery<0:
+    # Trying add roof hit
+    if playery> GROUNDY - 25  or playery<0:  # or playery < ROOFY + 25:
         GAME_SOUNDS['hit'].play()
         return True
     
@@ -187,7 +194,7 @@ if __name__ == "__main__":
     # This will be the main point from where our game will start
     pygame.init() # Initialize all pygame's modules
     FPSCLOCK = pygame.time.Clock()
-    pygame.display.set_caption('Flappy Bird by CodeWithHarry')
+    pygame.display.set_caption('KirbEEG by Group 2')
     GAME_SPRITES['numbers'] = ( 
         pygame.image.load('gallery/sprites/0.png').convert_alpha(),
         pygame.image.load('gallery/sprites/1.png').convert_alpha(),
@@ -201,8 +208,9 @@ if __name__ == "__main__":
         pygame.image.load('gallery/sprites/9.png').convert_alpha(),
     )
 
-    GAME_SPRITES['message'] =pygame.image.load('gallery/sprites/message.png').convert_alpha()
-    GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/base.png').convert_alpha()
+    GAME_SPRITES['message'] =pygame.image.load('gallery/sprites/kirby_welcome_transp.png').convert_alpha()
+    GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/floor_cut.png').convert_alpha()
+    GAME_SPRITES['roof'] =pygame.image.load('gallery/sprites/roof_cut.png').convert_alpha()
     GAME_SPRITES['pipe'] =(pygame.transform.rotate(pygame.image.load( PIPE).convert_alpha(), 180), 
     pygame.image.load(PIPE).convert_alpha()
     )

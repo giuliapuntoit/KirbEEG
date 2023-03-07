@@ -14,7 +14,7 @@ GAME_SPRITES = {}
 GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/kirby2_crop.png'
 BACKGROUND = 'gallery/sprites/kirby_background.png'
-PIPE = 'gallery/sprites/pipe.png'
+PIPE = 'gallery/sprites/pipe_trial.png'
 
 def welcomeScreen():
     """
@@ -119,12 +119,44 @@ def mainGame():
             playerFlapped = False            
         playerHeight = GAME_SPRITES['player'].get_height()
 
-        playery = playery + min(playerVelY, GROUNDY - playery - playerHeight)
+        old_playery = playery
+        playery = old_playery + min(playerVelY, GROUNDY - old_playery - playerHeight)
 
         # Added roof boundary
-        if playery < ROOFY + GAME_SPRITES['roof'].get_height(): 
-            playery = ROOFY + GAME_SPRITES['roof'].get_height()
-        
+        if old_playery < ROOFY + GAME_SPRITES['roof'].get_height(): 
+            playery = max(old_playery + playerVelY, ROOFY + GAME_SPRITES['roof'].get_height() + playerVelY)
+
+            #playery = ROOFY + GAME_SPRITES['roof'].get_height()
+
+        # TODO add here logic pipes:
+        # logic to stay on top of pipes and don't crash inside them
+
+        playerWidth = GAME_SPRITES['player'].get_width() 
+            
+        pipe = upperPipes[0]
+        pipeHeight = GAME_SPRITES['pipe'][0].get_height()
+        pipeWidth = GAME_SPRITES['pipe'][0].get_height()
+        if playery < pipeHeight + pipe['y'] \
+           and playerx + playerWidth > pipe['x'] \
+           and playerx < pipe['x'] + pipeWidth:
+            if not crashTest:
+                playery = max(old_playery + playerVelY, pipe['y']+ pipeHeight, pipe['y']+ pipeHeight + playerVelY)
+
+        pipe = lowerPipes[0]
+        if playery + GAME_SPRITES['player'].get_height() > pipe['y'] \
+            and playerx + playerWidth > pipe['x'] \
+            and playerx < pipe['x'] + pipeWidth:
+            if not crashTest:
+                playery = old_playery + min(playerVelY, pipe['y'] - old_playery - playerHeight)
+
+        # if the pipe starts getting out of the screen need to check it is not too far
+        if pipe['x'] + pipeWidth > 0 and pipe['x']<=0 and playerx - (pipe['x'] + pipeWidth) < pipeWidth:
+            playery = old_playery + min(playerVelY, GROUNDY - old_playery - playerHeight)
+
+            # Added roof boundary
+            if old_playery < ROOFY + GAME_SPRITES['roof'].get_height(): 
+                playery = max(old_playery + playerVelY, ROOFY + GAME_SPRITES['roof'].get_height()+ playerVelY)
+
 
         # move pipes to the left
         for upperPipe , lowerPipe in zip(upperPipes, lowerPipes):
@@ -169,19 +201,49 @@ def isCollide(playerx, playery, upperPipes, lowerPipes):
     #if playery> GROUNDY - 25  or playery < 0: 
     #    GAME_SOUNDS['hit'].play()
     #    return True
+
+    # TODO change isCollide to only vertical touches, not also horizontally
+    # If we touch on top or on bottom is not a problem
     
+    collision = False
+
+    #for pipe in upperPipes:
+    #    pipeHeight = GAME_SPRITES['pipe'][0].get_height()
+    #    if(playery < pipeHeight + pipe['y'] and abs(playerx - pipe['x']) < GAME_SPRITES['pipe'][0].get_width()):
+    #        #GAME_SOUNDS['hit'].play()
+    #        collision = True
+
+    #for pipe in lowerPipes:
+    #    if (playery + GAME_SPRITES['player'].get_height() > pipe['y']) and abs(playerx - pipe['x']) < GAME_SPRITES['pipe'][0].get_width():
+    #        #GAME_SOUNDS['hit'].play()
+    #        collision = True
+
+    playerWidth = GAME_SPRITES['player'].get_width() 
+        
     for pipe in upperPipes:
         pipeHeight = GAME_SPRITES['pipe'][0].get_height()
-        if(playery < pipeHeight + pipe['y'] and abs(playerx - pipe['x']) < GAME_SPRITES['pipe'][0].get_width()):
-            GAME_SOUNDS['hit'].play()
-            return True
+        pipeWidth = GAME_SPRITES['pipe'][0].get_height()
+        if playery < pipeHeight + pipe['y'] \
+            and playerx + playerWidth > pipe['x'] \
+            and playerx < pipe['x'] + pipeWidth \
+            and playerx - pipe['x'] <= pipeWidth:
+            collision = True
+
+        if pipe['x'] + pipeWidth > 0 and pipe['x']<=0 and playerx - (pipe['x'] + pipeWidth) < pipeWidth:
+            collision = False
+            
 
     for pipe in lowerPipes:
-        if (playery + GAME_SPRITES['player'].get_height() > pipe['y']) and abs(playerx - pipe['x']) < GAME_SPRITES['pipe'][0].get_width():
-            GAME_SOUNDS['hit'].play()
-            return True
+        if playery + GAME_SPRITES['player'].get_height() > pipe['y'] \
+            and playerx + playerWidth > pipe['x'] \
+            and playerx < pipe['x'] + pipeWidth \
+            and playerx - pipe['x'] <= pipeWidth:
+                collision = True
 
-    return False
+        if pipe['x'] + pipeWidth > 0 and pipe['x']<=0 and playerx - (pipe['x'] + pipeWidth) < pipeWidth:
+            collision = False
+
+    return collision
 
 def getRandomPipe():
     """
@@ -190,7 +252,7 @@ def getRandomPipe():
     pipeHeight = GAME_SPRITES['pipe'][0].get_height()
     offset = SCREENHEIGHT/3
     y2 = offset + random.randrange(0, int(SCREENHEIGHT - GAME_SPRITES['base'].get_height()  - 1.2 *offset))
-    pipeX = SCREENWIDTH + 10
+    pipeX = SCREENWIDTH + 5
     y1 = pipeHeight - y2 + offset
     pipe = [
         {'x': pipeX, 'y': -y1}, #upper Pipe

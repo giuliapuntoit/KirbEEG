@@ -14,7 +14,7 @@ GAME_SPRITES = {}
 GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/kirby2_crop.png'
 BACKGROUND = 'gallery/sprites/kirby_background.png'
-PIPE = 'gallery/sprites/pipe_trial.png'
+PIPE = 'gallery/sprites/pipe_big.png'
 
 def welcomeScreen():
     """
@@ -48,7 +48,7 @@ def welcomeScreen():
 def mainGame():
     score = 0
     playerx = int(SCREENWIDTH/5)
-    playery = int(SCREENWIDTH/2)
+    playery = int(SCREENHEIGHT/2)
     basex = 0
 
     # Create 2 pipes for blitting on the screen
@@ -66,15 +66,25 @@ def mainGame():
         {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2[1]['y']},
     ]
 
-    pipeVelX = -4
+    # Values from code
+    #pipeVelX = -4
 
     # I think playerVelY is what gives the gravity feature
-    playerVelY = -9
-    playerMaxVelY = 10
-    playerMinVelY = -8
+    #playerVelY = -9
+    #playerMaxVelY = 10
+    #playerMinVelY = -8
+    #playerAccY = 1
+
+    # Trial values
+    pipeVelX = -2
+
+    # I think playerVelY is what gives the gravity feature
+    playerVelY = -1
+    playerMaxVelY = 4
+    playerMinVelY = -3
     playerAccY = 1
 
-    playerFlapAccv = -8 # velocity while flapping
+    playerFlapAccv = -5 # velocity while flapping
     playerFlapped = False # It is true only when the bird is flapping
 
 
@@ -84,6 +94,7 @@ def mainGame():
                 pygame.quit()
                 sys.exit()
             # TODO here we probably need to define another keyboard input to get down (if no gravity)
+            #if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
                 # Reducing the roof boundary: how to set it as if it were soldi?
                 #if playery > 0:

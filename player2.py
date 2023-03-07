@@ -23,6 +23,9 @@ PLAYER_2 = 'gallery/sprites/kirby2_crop.png'
 BACKGROUND = 'players2/kirby_background_small.png'
 PIPE = 'gallery/sprites/pipe_trial.png'
 
+WINNING = 5
+
+
 def welcomeScreen():
     """
     Shows welcome images on the screen
@@ -60,6 +63,51 @@ def welcomeScreen():
                 SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2))   
                 pygame.display.update()
                 FPSCLOCK.tick(FPS)
+
+
+
+
+def winningScreen(winner):
+    """
+    Shows welcome images on the screen
+    """
+
+    playerx = int(SCREENWIDTH/5)
+    playery = int(SCREENWIDTH/2)
+
+    playerx_2 = int(SCREENWIDTH/5)
+    playery_2 = int(SCREENWIDTH/2 + SCREENHEIGHT)
+
+
+    messagex = int((SCREENWIDTH - GAME_SPRITES['message'].get_width())/2)
+    messagey = int(SCREENHEIGHT*0.13)
+    basex = 0
+    basex_2 = 0
+    print("WINNER", winner)
+    while True:
+        for event in pygame.event.get():
+            # if user clicks on cross button, close the game
+            if event.type == QUIT or (event.type==KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+
+            # If the user presses space or up key, start the game for them
+            #elif event.type==KEYDOWN and (event.key==K_SPACE or event.key == K_UP):
+            #    return
+            else:
+                SCREEN.blit(GAME_SPRITES['background'], (0, 0))    
+                #SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))   
+                #SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2))  
+                SCREEN.blit(GAME_SPRITES['message'], (messagex,messagey ))    
+                #SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))   
+                #SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))
+                #SCREEN.blit(GAME_SPRITES['base_2'], (basex_2, GROUNDY_2))   
+                #SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2))   
+                pygame.display.update()
+                FPSCLOCK.tick(FPS)
+
+
+
 
 def mainGame():
     score = 0
@@ -183,6 +231,10 @@ def mainGame():
                 print(f"P2: Your score is {score_2}") 
                 #GAME_SOUNDS['point'].play()
 
+        if score > WINNING or score_2 > WINNING:
+            winningScreen("Player 1")
+            break
+    
 
         if playerVelY <playerMaxVelY and not playerFlapped:
             playerVelY += playerAccY
@@ -348,6 +400,7 @@ def mainGame():
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
+    
 
 def isCollide(playerx, playery, upperPipes, lowerPipes):
     # Removed hit noise when hitting the roof
@@ -466,7 +519,6 @@ def getRandomPipe_2():
         {'x': pipeX_2, 'y': SCREENHEIGHT + y2_2} #lower Pipe
     ]
     return pipe_2
-
 
 
 

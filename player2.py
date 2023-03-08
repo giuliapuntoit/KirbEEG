@@ -9,20 +9,22 @@ SCREENWIDTH = 800
 TOTAL_SCREENHEIGHT = 600
 SCREENHEIGHT = TOTAL_SCREENHEIGHT/2
 SCREEN = pygame.display.set_mode((SCREENWIDTH, TOTAL_SCREENHEIGHT))
-GROUNDY = SCREENHEIGHT * .92
 
-GROUNDY_2 = SCREENHEIGHT * .92 + SCREENHEIGHT
-ROOFY = SCREENHEIGHT * 0 - 10
+GROUNDY = SCREENHEIGHT - 36
+ROOFY = -2
 
-ROOFY_2 = SCREENHEIGHT * 0 - 10 + SCREENHEIGHT
+GROUNDY_2 = TOTAL_SCREENHEIGHT - 36
+ROOFY_2 = SCREENHEIGHT + 2
+
 GAME_SPRITES = {}
 GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/kirby2_crop.png'
 PLAYER_2 = 'gallery/sprites/kirby2_crop.png'
 #BACKGROUND = 'gallery/sprites/kirby_background.png'
 BACKGROUND = 'players2/kirby_background_small.png'
-PIPE = 'gallery/sprites/pipe_trial.png'
-
+PIPE = 'gallery/sprites/pipe_dim_medium.png'
+PIPESMALL = 'gallery/sprites/pipe_dim_small.png'
+PIPEBIG = 'gallery/sprites/pipe_dim_big.png'
 WINNING = 5
 
 
@@ -53,14 +55,16 @@ def welcomeScreen():
             elif event.type==KEYDOWN and (event.key==K_SPACE or event.key == K_UP):
                 return
             else:
-                SCREEN.blit(GAME_SPRITES['background'], (0, 0))    
+                SCREEN.blit(GAME_SPRITES['background'], (0, 0)) 
+                SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY+18))     
                 #SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))   
-                #SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2))  
-                SCREEN.blit(GAME_SPRITES['message'], (messagex,messagey ))    
+                #SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2))   
                 SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))   
                 SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))
                 SCREEN.blit(GAME_SPRITES['base_2'], (basex_2, GROUNDY_2))   
-                SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2))   
+                SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2))  
+                SCREEN.blit(GAME_SPRITES['message'], (messagex,messagey )) 
+                
                 pygame.display.update()
                 FPSCLOCK.tick(FPS)
 
@@ -79,7 +83,7 @@ def winningScreen(winner):
     playery_2 = int(SCREENWIDTH/2 + SCREENHEIGHT)
 
 
-    messagex = int((SCREENWIDTH - GAME_SPRITES['message'].get_width())/2)
+    messagex = int((SCREENWIDTH - GAME_SPRITES['winning'].get_width())/2)
     messagey = int(SCREENHEIGHT*0.13)
     basex = 0
     basex_2 = 0
@@ -98,11 +102,17 @@ def winningScreen(winner):
                 SCREEN.blit(GAME_SPRITES['background'], (0, 0))    
                 #SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))   
                 #SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2))  
-                SCREEN.blit(GAME_SPRITES['message'], (messagex,messagey ))    
+                SCREEN.blit(GAME_SPRITES['winning'], (messagex,messagey ))    
                 #SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))   
                 #SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))
                 #SCREEN.blit(GAME_SPRITES['base_2'], (basex_2, GROUNDY_2))   
-                #SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2))   
+                #SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2)) 
+                if winner==1:
+                    SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))   
+                else: 
+                    SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2)) 
+
+                SCREEN.blit(GAME_SPRITES['numbers'][winner], (SCREENWIDTH/2 - 5, SCREENHEIGHT +30))  
                 pygame.display.update()
                 FPSCLOCK.tick(FPS)
 
@@ -130,25 +140,25 @@ def mainGame():
 
     # my List of upper pipes
     upperPipes = [
-        {'x': SCREENWIDTH+200, 'y':newPipe1[0]['y']},
-        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2[0]['y']},
+        {'x': SCREENWIDTH+200, 'y':newPipe1[0]['y'], 'type': newPipe1[0]['type']},
+        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2[0]['y'], 'type': newPipe2[0]['type']}
     ]
     # my List of lower pipes
     lowerPipes = [
-        {'x': SCREENWIDTH+200, 'y':newPipe1[1]['y']},
-        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2[1]['y']},
+        {'x': SCREENWIDTH+200, 'y':newPipe1[1]['y'], 'type': newPipe1[1]['type']},
+        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2[1]['y'], 'type': newPipe2[1]['type']},
     ]
 
 
     # my List of upper pipes
     upperPipes_2 = [
-        {'x': SCREENWIDTH+200, 'y':newPipe1_2[0]['y']},
-        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2_2[0]['y']},
+        {'x': SCREENWIDTH+200, 'y':newPipe1_2[0]['y'], 'type': newPipe1_2[0]['type']},
+        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2_2[0]['y'], 'type': newPipe2_2[0]['type']},
     ]
     # my List of lower pipes
     lowerPipes_2 = [
-        {'x': SCREENWIDTH+200, 'y':newPipe1_2[1]['y']},
-        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2_2[1]['y']},
+        {'x': SCREENWIDTH+200, 'y':newPipe1_2[1]['y'], 'type': newPipe1_2[1]['type']},
+        {'x': SCREENWIDTH+200+(SCREENWIDTH/2), 'y':newPipe2_2[1]['y'], 'type': newPipe2_2[1]['type']},
     ]
 
     # Values from code
@@ -231,9 +241,13 @@ def mainGame():
                 print(f"P2: Your score is {score_2}") 
                 #GAME_SOUNDS['point'].play()
 
-        if score > WINNING or score_2 > WINNING:
-            winningScreen("Player 1")
-            break
+        if score > WINNING:
+            GAME_SOUNDS['point'].play()
+            return 1
+            
+        elif score_2 > WINNING:
+            GAME_SOUNDS['point'].play()
+            return 2
     
 
         if playerVelY <playerMaxVelY and not playerFlapped:
@@ -271,11 +285,11 @@ def mainGame():
         playerWidth_2 = GAME_SPRITES['player_2'].get_width() 
             
         pipe = upperPipes[0]
-        pipeHeight = GAME_SPRITES['pipe'][0].get_height()
+        pipeHeight = GAME_SPRITES[pipe['type']][0].get_height()
         pipeWidth = GAME_SPRITES['pipe'][0].get_width()
 
         pipe_2 = upperPipes_2[0]
-        pipeHeight_2 = GAME_SPRITES['pipe_2'][0].get_height()
+        pipeHeight_2 = GAME_SPRITES[pipe_2['type']][0].get_height()
         pipeWidth_2 = GAME_SPRITES['pipe_2'][0].get_width()
 
         if playery < pipeHeight + pipe['y'] \
@@ -359,14 +373,16 @@ def mainGame():
         # Lets blit our sprites now
         SCREEN.blit(GAME_SPRITES['background'], (0, 0))
         for upperPipe, lowerPipe in zip(upperPipes, lowerPipes):
-            SCREEN.blit(GAME_SPRITES['pipe'][0], (upperPipe['x'], upperPipe['y']))
-            SCREEN.blit(GAME_SPRITES['pipe'][1], (lowerPipe['x'], lowerPipe['y']))
+            SCREEN.blit(GAME_SPRITES[upperPipe['type']][0], (upperPipe['x'], upperPipe['y']))
+            SCREEN.blit(GAME_SPRITES[lowerPipe['type']][1], (lowerPipe['x'], lowerPipe['y']))
 
         for upperPipe_2, lowerPipe_2 in zip(upperPipes_2, lowerPipes_2):
-            SCREEN.blit(GAME_SPRITES['pipe_2'][0], (upperPipe_2['x'], upperPipe_2['y']))
-            SCREEN.blit(GAME_SPRITES['pipe_2'][1], (lowerPipe_2['x'], lowerPipe_2['y']))
+                # Taking pipe small or big based on the type of the upper
+            SCREEN.blit(GAME_SPRITES[upperPipe_2['type']][0], (upperPipe_2['x'], upperPipe_2['y']))
+            SCREEN.blit(GAME_SPRITES[lowerPipe_2['type']][1], (lowerPipe_2['x'], lowerPipe_2['y']))
 
         # Adding floor and roof
+        SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY+18))   
         SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))
         SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))
         SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))
@@ -427,8 +443,8 @@ def isCollide(playerx, playery, upperPipes, lowerPipes):
     playerWidth = GAME_SPRITES['player'].get_width() 
         
     for pipe in upperPipes:
-        pipeHeight = GAME_SPRITES['pipe'][0].get_height()
-        pipeWidth = GAME_SPRITES['pipe'][0].get_height()
+        pipeHeight = GAME_SPRITES[pipe['type']][0].get_height()
+        pipeWidth = GAME_SPRITES[pipe['type']][0].get_height()
         if playery < pipeHeight + pipe['y'] \
             and playerx + playerWidth > pipe['x'] \
             and playerx < pipe['x'] + pipeWidth \
@@ -440,6 +456,8 @@ def isCollide(playerx, playery, upperPipes, lowerPipes):
             
 
     for pipe in lowerPipes:
+        pipeHeight = GAME_SPRITES[pipe['type']][0].get_height()
+        pipeWidth = GAME_SPRITES[pipe['type']][0].get_height()
         if playery + GAME_SPRITES['player'].get_height() > pipe['y'] \
             and playerx + playerWidth > pipe['x'] \
             and playerx < pipe['x'] + pipeWidth \
@@ -459,8 +477,8 @@ def isCollide_2(playerx_2, playery_2, upperPipes_2, lowerPipes_2):
     playerWidth_2 = GAME_SPRITES['player_2'].get_width() 
         
     for pipe_2 in upperPipes_2:
-        pipeHeight_2 = GAME_SPRITES['pipe_2'][0].get_height()
-        pipeWidth_2 = GAME_SPRITES['pipe_2'][0].get_height()
+        pipeHeight_2 = GAME_SPRITES[pipe_2['type']][0].get_height()
+        pipeWidth_2 = GAME_SPRITES[pipe_2['type']][0].get_height()
         if playery_2 < pipeHeight_2 + pipe_2['y'] \
             and playerx_2 + playerWidth_2 > pipe_2['x'] \
             and playerx_2 < pipe_2['x'] + pipeWidth_2 \
@@ -472,6 +490,8 @@ def isCollide_2(playerx_2, playery_2, upperPipes_2, lowerPipes_2):
             
 
     for pipe_2 in lowerPipes_2:
+        pipeHeight_2 = GAME_SPRITES[pipe_2['type']][0].get_height()
+        pipeWidth_2 = GAME_SPRITES[pipe_2['type']][0].get_height()
         if playery_2 + GAME_SPRITES['player_2'].get_height() > pipe_2['y'] \
             and playerx_2 + playerWidth_2 > pipe_2['x'] \
             and playerx_2 < pipe_2['x'] + pipeWidth_2 \
@@ -488,19 +508,41 @@ def getRandomPipe():
     """
     Generate positions of two pipes(one bottom straight and one top rotated ) for blitting on the screen
     """
+    type_upper = 'pipe'
+    type_lower = 'pipe'
+
     pipeHeight = GAME_SPRITES['pipe'][0].get_height()
     offset = SCREENHEIGHT/3
     y2 = offset + random.randrange(0, int(SCREENHEIGHT - GAME_SPRITES['base'].get_height()  - 1.2 *offset))
     pipeX = SCREENWIDTH + 5
     y1 = pipeHeight - y2 + offset
+
+    # Logic for lower
+    if y2 + pipeHeight < SCREENHEIGHT - GAME_SPRITES['base'].get_height():
+        type_lower = 'pipe_big'
+        if y2 + GAME_SPRITES['pipe_big'][1].get_height() < SCREENHEIGHT - GAME_SPRITES['base'].get_height():
+            y2 = SCREENHEIGHT - GAME_SPRITES['pipe_big'][1].get_height()
+
+    if y2 + pipeHeight > SCREENHEIGHT:
+        type_lower = 'pipe_small'
+        if y2 + GAME_SPRITES['pipe_small'][1].get_height() > SCREENHEIGHT:
+            y2 = SCREENHEIGHT - GAME_SPRITES['base'].get_height() - GAME_SPRITES['pipe_small'][1].get_height()
+
+    # logic for upper
+    if y1 < -GAME_SPRITES['roof'].get_height():
+        type_upper = 'pipe_big'
+        y1 = -GAME_SPRITES['roof'].get_height()
+
+
     pipe = [
-        {'x': pipeX, 'y': -y1}, #upper Pipe
-        {'x': pipeX, 'y': y2} #lower Pipe
+        {'x': pipeX, 'y': -y1, 'type': type_upper}, #upper Pipe
+        {'x': pipeX, 'y': y2, 'type': type_lower} #lower Pipe
     ]
     return pipe
 
 
 def getRandomPipe_2():
+    # Logic is different for pipes of player 1 and 2
 
     # TODO I could change the type of image taken based on the position on the screen:
     # ex for lower pipes:  if it is high we get bigger pipes
@@ -509,14 +551,38 @@ def getRandomPipe_2():
     """
     Generate positions of two pipes(one bottom straight and one top rotated ) for blitting on the screen
     """
+
+    # TODO Try adding different types of pipe
+    type_upper = 'pipe'
+    type_lower = 'pipe'
+
     pipeHeight_2 = GAME_SPRITES['pipe_2'][0].get_height()
     offset_2 = SCREENHEIGHT/3
     y2_2 = offset_2 + random.randrange(0, int(SCREENHEIGHT - GAME_SPRITES['base_2'].get_height()  - 1.2 *offset_2))
+    
     pipeX_2 = SCREENWIDTH + 5
     y1_2 = pipeHeight_2 - y2_2 + offset_2
+
+    if y1_2 > GAME_SPRITES['roof_2'].get_height():
+        #offset_2 = SCREENHEIGHT/5
+        type_upper = 'pipe_small'
+        y1_2 = 0
+
+    if y1_2 < - GAME_SPRITES['roof_2'].get_height():
+        type_upper = 'pipe_big'
+        #offset_2 = SCREENHEIGHT/5
+        y1_2 =  GAME_SPRITES['roof_2'].get_height()
+    
+
+    if TOTAL_SCREENHEIGHT - (SCREENHEIGHT + y2_2) > pipeHeight_2:
+        type_lower = 'pipe_big'
+        if TOTAL_SCREENHEIGHT - (SCREENHEIGHT + y2_2) > GAME_SPRITES['pipe_big'][1].get_height():
+            y2_2 += (TOTAL_SCREENHEIGHT - (SCREENHEIGHT + y2_2)) - GAME_SPRITES['pipe_big'][1].get_height()
+
+
     pipe_2 = [
-        {'x': pipeX_2, 'y': SCREENHEIGHT-y1_2}, #upper Pipe
-        {'x': pipeX_2, 'y': SCREENHEIGHT + y2_2} #lower Pipe
+        {'x': pipeX_2, 'y': SCREENHEIGHT-y1_2, 'type': type_upper}, #upper Pipe
+        {'x': pipeX_2, 'y': SCREENHEIGHT + y2_2, 'type': type_lower} #lower Pipe
     ]
     return pipe_2
 
@@ -556,14 +622,26 @@ if __name__ == "__main__":
     )
 
     GAME_SPRITES['message'] =pygame.image.load('gallery/sprites/kirby_welcome.png').convert_alpha()
-    GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/floor_cut.png').convert_alpha()
-    GAME_SPRITES['roof'] =pygame.image.load('gallery/sprites/roof_cut.png').convert_alpha()
+    GAME_SPRITES['winning'] =pygame.image.load('gallery/sprites/winning.png').convert_alpha()
+    GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/floor_try.png').convert_alpha()
+    GAME_SPRITES['roof'] =pygame.image.load('gallery/sprites/roof_try.png').convert_alpha()
     GAME_SPRITES['pipe'] =(pygame.transform.rotate(pygame.image.load( PIPE).convert_alpha(), 180), 
     pygame.image.load(PIPE).convert_alpha()
+
+    )
+    # TRYING ADDING ANOTHER PIPE
+    GAME_SPRITES['pipe_small'] =(pygame.transform.rotate(pygame.image.load( PIPESMALL).convert_alpha(), 180), 
+    pygame.image.load(PIPESMALL).convert_alpha()
+
+    )
+    # TRYING ADDING ANOTHER PIPE
+    GAME_SPRITES['pipe_big'] =(pygame.transform.rotate(pygame.image.load( PIPESMALL).convert_alpha(), 180), 
+    pygame.image.load(PIPEBIG).convert_alpha()
+
     )
 
-    GAME_SPRITES['base_2'] =pygame.image.load('gallery/sprites/floor_cut.png').convert_alpha()
-    GAME_SPRITES['roof_2'] =pygame.image.load('gallery/sprites/roof_cut.png').convert_alpha()
+    GAME_SPRITES['base_2'] =pygame.image.load('gallery/sprites/floor_try.png').convert_alpha()
+    GAME_SPRITES['roof_2'] =pygame.image.load('gallery/sprites/roof_try.png').convert_alpha()
     GAME_SPRITES['pipe_2'] =(pygame.transform.rotate(pygame.image.load( PIPE).convert_alpha(), 180), 
     pygame.image.load(PIPE).convert_alpha()
     )
@@ -581,4 +659,6 @@ if __name__ == "__main__":
 
     while True:
         welcomeScreen() # Shows welcome screen to the user until he presses a button
-        mainGame() # This is the main game function 
+        result = mainGame() # This is the main game function 
+        if result is not None:
+            winningScreen(result)

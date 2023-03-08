@@ -241,11 +241,11 @@ def mainGame():
                 print(f"P2: Your score is {score_2}") 
                 #GAME_SOUNDS['point'].play()
 
-        if score >= WINNING:
+        if score > WINNING:
             GAME_SOUNDS['point'].play()
             return 1
             
-        elif score_2 >= WINNING:
+        elif score_2 > WINNING:
             GAME_SOUNDS['point'].play()
             return 2
     

@@ -8,13 +8,15 @@ FPS = 32
 SCREENWIDTH = 900
 SCREENHEIGHT = 600
 SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
-GROUNDY = SCREENHEIGHT * .92
-ROOFY = SCREENHEIGHT * 0 - 10
+GROUNDY = SCREENHEIGHT -36
+ROOFY = - 2
 GAME_SPRITES = {}
 GAME_SOUNDS = {}
 PLAYER = 'gallery/sprites/kirby2_crop.png'
 BACKGROUND = 'gallery/sprites/kirby_background.png'
 PIPE = 'gallery/sprites/pipe_big.png'
+
+WINNING = 5
 
 def welcomeScreen():
     """
@@ -44,6 +46,47 @@ def welcomeScreen():
                 SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))  
                 pygame.display.update()
                 FPSCLOCK.tick(FPS)
+
+def winningScreen(winner):
+    """
+    Shows welcome images on the screen
+    """
+
+    playerx = int(SCREENWIDTH/5)
+    playery = int(SCREENWIDTH/2)
+
+
+    messagex = int((SCREENWIDTH - GAME_SPRITES['winning'].get_width())/2)
+    messagey = int(SCREENHEIGHT*0.13)
+    basex = 0
+    print("WINNER", winner)
+    while True:
+        for event in pygame.event.get():
+            # if user clicks on cross button, close the game
+            if event.type == QUIT or (event.type==KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+
+            # If the user presses space or up key, start the game for them
+            #elif event.type==KEYDOWN and (event.key==K_SPACE or event.key == K_UP):
+            #    return
+            else:
+                SCREEN.blit(GAME_SPRITES['background'], (0, 0))    
+                #SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))   
+                #SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2))  
+                SCREEN.blit(GAME_SPRITES['winning'], (messagex,messagey ))    
+                #SCREEN.blit(GAME_SPRITES['base'], (basex, GROUNDY))   
+                #SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))
+                #SCREEN.blit(GAME_SPRITES['base_2'], (basex_2, GROUNDY_2))   
+                #SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2)) 
+                if winner==1:
+                    SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))   
+
+                SCREEN.blit(GAME_SPRITES['numbers'][winner], (SCREENWIDTH/2 - 5, SCREENHEIGHT +30))  
+                pygame.display.update()
+                FPSCLOCK.tick(FPS)
+
+
 
 def mainGame():
     score = 0
@@ -122,6 +165,10 @@ def mainGame():
                 print(f"Your score is {score}") 
                 GAME_SOUNDS['point'].play()
 
+
+        if score > WINNING:
+            GAME_SOUNDS['point'].play()
+            return 1
 
         if playerVelY <playerMaxVelY and not playerFlapped:
             playerVelY += playerAccY
@@ -295,8 +342,8 @@ if __name__ == "__main__":
     )
 
     GAME_SPRITES['message'] =pygame.image.load('gallery/sprites/kirby_welcome.png').convert_alpha()
-    GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/floor_cut.png').convert_alpha()
-    GAME_SPRITES['roof'] =pygame.image.load('gallery/sprites/roof_cut.png').convert_alpha()
+    GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/floor_try.png').convert_alpha()
+    GAME_SPRITES['roof'] =pygame.image.load('gallery/sprites/roof_try.png').convert_alpha()
     GAME_SPRITES['pipe'] =(pygame.transform.rotate(pygame.image.load( PIPE).convert_alpha(), 180), 
     pygame.image.load(PIPE).convert_alpha()
     )
@@ -313,4 +360,6 @@ if __name__ == "__main__":
 
     while True:
         welcomeScreen() # Shows welcome screen to the user until he presses a button
-        mainGame() # This is the main game function 
+        result = mainGame() # This is the main game function 
+        if result is not None:
+            winningScreen(result)

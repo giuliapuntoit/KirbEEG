@@ -4,7 +4,7 @@ import pygame
 from pygame.locals import * # Basic pygame imports
 
 # Global Variables for the game
-FPS = 32
+FPS = 16
 SCREENWIDTH = 900
 SCREENHEIGHT = 600
 SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
@@ -119,15 +119,15 @@ def mainGame():
     #playerAccY = 1
 
     # Trial values
-    pipeVelX = -2
+    pipeVelX = -4
 
     # I think playerVelY is what gives the gravity feature
-    playerVelY = -1
-    playerMaxVelY = 4
+    playerVelY = -10
+    playerMaxVelY = 10
     playerMinVelY = -3
-    playerAccY = 1
+    playerAccY = 3
 
-    playerFlapAccv = -5 # velocity while flapping
+    playerFlapAccv = -20 # velocity while flapping
     playerFlapped = False # It is true only when the bird is flapping
 
 

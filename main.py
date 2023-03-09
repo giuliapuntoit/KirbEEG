@@ -118,6 +118,8 @@ def mainGame():
     #playerMinVelY = -8
     #playerAccY = 1
 
+    #playerFlapAccv = -8 # velocity while flapping
+
     # Trial values
     pipeVelX = -4
 
@@ -128,6 +130,8 @@ def mainGame():
     playerAccY = 3
 
     playerFlapAccv = -20 # velocity while flapping
+
+    
     playerFlapped = False # It is true only when the bird is flapping
 
 

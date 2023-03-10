@@ -346,6 +346,7 @@ if __name__ == "__main__":
     )
 
     GAME_SPRITES['message'] =pygame.image.load('gallery/sprites/kirby_welcome.png').convert_alpha()
+    GAME_SPRITES['winning'] =pygame.image.load('gallery/sprites/winning.png').convert_alpha()
     GAME_SPRITES['base'] =pygame.image.load('gallery/sprites/floor_try.png').convert_alpha()
     GAME_SPRITES['roof'] =pygame.image.load('gallery/sprites/roof_try.png').convert_alpha()
     GAME_SPRITES['pipe'] =(pygame.transform.rotate(pygame.image.load( PIPE).convert_alpha(), 180), 

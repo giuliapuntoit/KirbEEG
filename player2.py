@@ -199,10 +199,15 @@ def mainGame():
                     playerFlapped = True
                     # Removed sound when pressing space!
                     #GAME_SOUNDS['wing'].play()
+            # Adding keyboard pressed keeps jumping
+            else:
+                playerFlapped = False
             if event.type == KEYDOWN and (event.key == K_UP):
                 if playery_2 > ROOFY_2 + GAME_SPRITES['roof_2'].get_height():
                     playerVelY_2 = playerFlapAccv_2
                     playerFlapped_2 = True
+            else:
+                playerFlapped_2 = False
 
 
         crashTest = isCollide(playerx, playery, upperPipes, lowerPipes) # This function will return true if the player is crashed
@@ -256,11 +261,11 @@ def mainGame():
         if playerVelY_2 <playerMaxVelY_2 and not playerFlapped_2:
             playerVelY_2 += playerAccY_2
 
-        if playerFlapped:
-            playerFlapped = False    
+        #if playerFlapped:
+        #    playerFlapped = False    
 
-        if playerFlapped_2:
-            playerFlapped_2 = False          
+        #if playerFlapped_2:
+        #    playerFlapped_2 = False          
 
         playerHeight = GAME_SPRITES['player'].get_height()
         playerHeight_2 = GAME_SPRITES['player_2'].get_height()

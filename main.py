@@ -151,6 +151,8 @@ def mainGame():
                     playerFlapped = True
                     # Removed sound when pressing space!
                     #GAME_SOUNDS['wing'].play()
+            else:
+                playerFlapped = False
 
 
         crashTest = isCollide(playerx, playery, upperPipes, lowerPipes) # This function will return true if the player is crashed
@@ -177,8 +179,9 @@ def mainGame():
         if playerVelY <playerMaxVelY and not playerFlapped:
             playerVelY += playerAccY
 
-        if playerFlapped:
-            playerFlapped = False            
+        #if playerFlapped:
+        #    playerFlapped = False        
+        #     
         playerHeight = GAME_SPRITES['player'].get_height()
 
         old_playery = playery

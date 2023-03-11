@@ -103,10 +103,10 @@ def winningScreen(winner):
                 # SCREEN.blit(GAME_SPRITES['roof'], (basex, ROOFY))
                 # SCREEN.blit(GAME_SPRITES['base_2'], (basex_2, GROUNDY_2))
                 # SCREEN.blit(GAME_SPRITES['roof_2'], (basex_2, ROOFY_2))
-                if winner == 1:
-                    SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))
-                else:
-                    SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2))
+                #if winner == 1:
+                #    SCREEN.blit(GAME_SPRITES['player'], (playerx, playery))
+                #else:
+                #    SCREEN.blit(GAME_SPRITES['player_2'], (playerx_2, playery_2))
 
                 SCREEN.blit(GAME_SPRITES['numbers'][winner], (SCREENWIDTH / 2 - 5, SCREENHEIGHT + 30))
                 pygame.display.update()

@@ -25,7 +25,7 @@ BACKGROUND = 'players2/kirby_background_small.png'
 PIPE = 'gallery/sprites/pipe_dim_medium.png'
 PIPESMALL = 'gallery/sprites/pipe_dim_small.png'
 PIPEBIG = 'gallery/sprites/pipe_dim_big.png'
-WINNING = 5
+WINNING = 10
 
 
 def welcomeScreen():
@@ -159,21 +159,26 @@ def mainGame():
     pipeVelX_2 = -4
 
     # I think playerVelY is what gives the gravity feature
-    playerVelY = -9
+    playerVelY = 0
     playerMaxVelY = 10
     playerMinVelY = -8
     playerAccY = 1
 
-    playerVelY_2 = -9
+    playerVelY_2 = 0
     playerMaxVelY_2 = 10
     playerMinVelY_2 = -8
     playerAccY_2 = 1
 
     playerFlapAccv = -10  # velocity while flapping
     playerFlapped = False  # It is true only when the bird is flapping
+    playerDown = False
+    playerDownAccv = 5  # velocity while going down
 
     playerFlapAccv_2 = -10  # velocity while flapping
     playerFlapped_2 = False  # It is true only when the bird is flapping
+    playerDown = False
+    playerDownAccv_2 = 5  # velocity while going down
+
 
     while True:
         for event in pygame.event.get():
@@ -188,17 +193,41 @@ def mainGame():
                     # print(ROOFY, playerHeight)
                     playerVelY = playerFlapAccv
                     playerFlapped = True
+                    playerDown = False
+                    # Removed sound when pressing space!
+                    # GAME_SOUNDS['wing'].play()
+            # Adding keyboard pressed keeps jumping
+            elif event.type == KEYDOWN and (event.key == K_s):
+                #if playery > ROOFY + GAME_SPRITES['roof'].get_height():
+                    # print(ROOFY, playerHeight)
+                    playerVelY = playerDownAccv
+                    playerDown = True
+                    playerFlapped = False
                     # Removed sound when pressing space!
                     # GAME_SOUNDS['wing'].play()
             # Adding keyboard pressed keeps jumping
             else:
+                playerDown = False
                 playerFlapped = False
+
             if event.type == KEYDOWN and (event.key == K_b):
                 if playery_2 > ROOFY_2 + GAME_SPRITES['roof_2'].get_height():
                     playerVelY_2 = playerFlapAccv_2
                     playerFlapped_2 = True
+                    playerDown_2 = False
+            elif event.type == KEYDOWN and (event.key == K_n):
+                if playery > ROOFY + GAME_SPRITES['roof'].get_height():
+                    # print(ROOFY, playerHeight)
+                    playerVelY_2 = playerDownAccv_2
+                    playerDown_2 = True
+                    playerFlapped_2 = False
+
+                    # Removed sound when pressing space!
+                    # GAME_SOUNDS['wing'].play()
+            # Adding keyboard pressed keeps jumping
             else:
                 playerFlapped_2 = False
+                playerDown_2 = False
 
         crashTest = isCollide(playerx, playery, upperPipes,
                               lowerPipes)  # This function will return true if the player is crashed
@@ -243,21 +272,18 @@ def mainGame():
             GAME_SOUNDS['point'].play()
             return 2
 
-        if playerVelY < playerMaxVelY and not playerFlapped:
-            playerVelY += playerAccY
 
-        if playerVelY_2 < playerMaxVelY_2 and not playerFlapped_2:
-            playerVelY_2 += playerAccY_2
-
-        # if playerFlapped:
+        #if playerFlapped:
         #    playerFlapped = False
-
+        #if playerDown:
+        #    playerDown = False
         # if playerFlapped_2:
         #    playerFlapped_2 = False
 
         playerHeight = GAME_SPRITES['player'].get_height()
         playerHeight_2 = GAME_SPRITES['player_2'].get_height()
 
+        
         old_playery = playery
         playery = old_playery + min(playerVelY, GROUNDY - old_playery - playerHeight)
 

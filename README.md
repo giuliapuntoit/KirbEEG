@@ -41,6 +41,10 @@ When started, the 2-player game should look like this:
 
 To control the game through EEG you first need to connect board, electrodes and amplifiers. We run a 2 min calibration step in which we record for both players 2 minutes of data, 30 seconds with eyes open, 30s closed, 30s open, and 30s closed. This data needs to be stored and processed through the `Calibration.m` matlab code. This allows us to set the threshold that will be used to control the code. 
 
+This is an example of data collected for calibration purpose:
+
+<p align="center"><img src="./images/calibration_exmaple.png" height="400"></p>
+
 After the calibration process, thresholds will be saved in the `matlab` folder. You can use the TCP remote network functionality of Intan RHX software in order to stream collected data in real time to matlab. You can run `RealTime.m` matlab code to receive this data through TCP, process it and simulate keyboards inputs to control the KirbEEG game. **Be sure to select the correct channels in line of `RealTime.m`**.
 
 ```

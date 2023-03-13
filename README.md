@@ -5,6 +5,8 @@ Content of this repository:
 * `player2.py` contains the code for running 2-player KirbEEG game. 
 * `gallery` folder contains sprites and audio sounds for the game. Sprites contain all images used to show the game, while sounds are used only when winning for now. 
 * `players2` folder contains background used specifically for 2-player version.
+* `images` folder used to store images for readme.
+* `matlab` folder contains all code used for calibration of EEG signals and real time processing of TCP transmitted EEG signals, along with filter and one sample of EEG signals recorded for calibration.
 
 
 ## Quickstart

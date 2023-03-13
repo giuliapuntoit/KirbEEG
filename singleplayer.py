@@ -1,5 +1,5 @@
-import random # For generating random numbers
-import sys # We will use sys.exit to exit the program
+import random 
+import sys 
 import pygame
 from pygame.locals import * # Basic pygame imports
 
@@ -112,7 +112,7 @@ def mainGame():
     # Values from code
     #pipeVelX = -4
 
-    # I think playerVelY is what gives the gravity feature
+    # playerVelY is what gives the gravity feature
     #playerVelY = -9
     #playerMaxVelY = 10
     #playerMinVelY = -8
@@ -123,7 +123,7 @@ def mainGame():
     # Trial values
     pipeVelX = -4
 
-    # I think playerVelY is what gives the gravity feature
+    # playerVelY is what gives the gravity feature
     playerVelY = -10
     playerMaxVelY = 10
     playerMinVelY = -3
@@ -140,7 +140,6 @@ def mainGame():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
                 sys.exit()
-            # TODO here we probably need to define another keyboard input to get down (if no gravity)
             #if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
             if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
                 # Reducing the roof boundary: how to set it as if it were soldi?
@@ -165,7 +164,6 @@ def mainGame():
         playerMidPos = playerx + GAME_SPRITES['player'].get_width()/2
         for pipe in upperPipes:
             pipeMidPos = pipe['x'] + GAME_SPRITES['pipe'][0].get_width()/2
-            # TODO probably need to change this + 4 value too
             if pipeMidPos<= playerMidPos < pipeMidPos +4:
                 score +=1
                 print(f"Your score is {score}") 
@@ -193,7 +191,7 @@ def mainGame():
 
             #playery = ROOFY + GAME_SPRITES['roof'].get_height()
 
-        # TODO add here logic pipes:
+        # Add here logic pipes:
         # logic to stay on top of pipes and don't crash inside them
 
         playerWidth = GAME_SPRITES['player'].get_width() 
@@ -267,7 +265,7 @@ def isCollide(playerx, playery, upperPipes, lowerPipes):
     #    GAME_SOUNDS['hit'].play()
     #    return True
 
-    # TODO change isCollide to only vertical touches, not also horizontally
+    # change isCollide to only vertical touches, not also horizontally
     # If we touch on top or on bottom is not a problem
     
     collision = False
@@ -331,7 +329,7 @@ def getRandomPipe():
 
 
 if __name__ == "__main__":
-    # This will be the main point from where our game will start
+    # Main point from where our game will start
     pygame.init() # Initialize all pygame's modules
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_caption('KirbEEG by Group 2')

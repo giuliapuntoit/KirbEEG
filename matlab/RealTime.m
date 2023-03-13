@@ -353,7 +353,7 @@ while get(runButtonGroup.Children(2), 'Value')
                 hold on
             end
 
-             % TODO ADD HERE POWER COMPUTATION should use data in amplifierData(thisPlot, :)
+             % POWER COMPUTATION use data in amplifierData(thisPlot, :)
             load BandpassProj.mat;
             if thisPlot==1
                 filt_data1 = filtfilt(SOS,G,amplifierData(thisPlot,:));

@@ -1,7 +1,7 @@
-import random  # For generating random numbers
-import sys  # We will use sys.exit to exit the program
+import random 
+import sys  # We use sys.exit to exit the program
 import pygame
-from pygame.locals import *  # Basic pygame imports
+from pygame.locals import * 
 
 # Global Variables for the game
 FPS = 16
@@ -158,7 +158,7 @@ def mainGame():
     pipeVelX = -4
     pipeVelX_2 = -4
 
-    # I think playerVelY is what gives the gravity feature
+    # playerVelY is what gives the gravity feature
     playerVelY = 0
     playerMaxVelY = 10
     playerMinVelY = -8
@@ -185,9 +185,9 @@ def mainGame():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 pygame.quit()
                 sys.exit()
-            # TODO here we probably need to define another keyboard input to get down (if no gravity)
+            # We define another keyboard input to get down (if no gravity)
             if event.type == KEYDOWN and (event.key == K_a):
-                # Reducing the roof boundary: how to set it as if it were soldi?
+                # Reducing the roof boundary
                 # if playery > 0:
                 if playery > ROOFY + GAME_SPRITES['roof'].get_height():
                     # print(ROOFY, playerHeight)
@@ -248,17 +248,15 @@ def mainGame():
         playerMidPos = playerx + GAME_SPRITES['player'].get_width() / 2
         for pipe in upperPipes:
             pipeMidPos = pipe['x'] + GAME_SPRITES['pipe'][0].get_width() / 2
-            # TODO probably need to change this + 4 value too
             if pipeMidPos <= playerMidPos < pipeMidPos + 4:
                 score += 1
                 print(f"Your score is {score}")
                 # GAME_SOUNDS['point'].play()
 
-        # check for score
+        # check for score of second player
         playerMidPos_2 = playerx_2 + GAME_SPRITES['player_2'].get_width() / 2
         for pipe_2 in upperPipes_2:
             pipeMidPos_2 = pipe_2['x'] + GAME_SPRITES['pipe_2'][0].get_width() / 2
-            # TODO probably need to change this + 4 value too
             if pipeMidPos_2 <= playerMidPos_2 < pipeMidPos_2 + 4:
                 score_2 += 1
                 print(f"P2: Your score is {score_2}")
@@ -437,7 +435,7 @@ def isCollide(playerx, playery, upperPipes, lowerPipes):
     #    GAME_SOUNDS['hit'].play()
     #    return True
 
-    # TODO change isCollide to only vertical touches, not also horizontally
+    # Changed isCollide to only vertical touches, not also horizontally
     # If we touch on top or on bottom is not a problem
 
     collision = False
@@ -553,7 +551,7 @@ def getRandomPipe():
 def getRandomPipe_2():
     # Logic is different for pipes of player 1 and 2
 
-    # TODO I could change the type of image taken based on the position on the screen:
+    # We change the type of image taken based on the position on the screen:
     # ex for lower pipes:  if it is high we get bigger pipes
     # if is low we take smaller pipes
     # viceversa for upper pipes
@@ -633,12 +631,12 @@ if __name__ == "__main__":
                             pygame.image.load(PIPE).convert_alpha()
 
                             )
-    # TRYING ADDING ANOTHER PIPE
+    # ADDING ANOTHER PIPE
     GAME_SPRITES['pipe_small'] = (pygame.transform.rotate(pygame.image.load(PIPESMALL).convert_alpha(), 180),
                                   pygame.image.load(PIPESMALL).convert_alpha()
 
                                   )
-    # TRYING ADDING ANOTHER PIPE
+    # ADDING ANOTHER PIPE
     GAME_SPRITES['pipe_big'] = (pygame.transform.rotate(pygame.image.load(PIPESMALL).convert_alpha(), 180),
                                 pygame.image.load(PIPEBIG).convert_alpha()
 
@@ -651,6 +649,7 @@ if __name__ == "__main__":
                               )
 
     # Game sounds
+    # Do not need all of them
     GAME_SOUNDS['die'] = pygame.mixer.Sound('gallery/audio/die.wav')
     GAME_SOUNDS['hit'] = pygame.mixer.Sound('gallery/audio/hit.wav')
     GAME_SOUNDS['point'] = pygame.mixer.Sound('gallery/audio/point.wav')

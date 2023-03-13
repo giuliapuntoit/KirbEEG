@@ -43,7 +43,7 @@ To control the game through EEG you first need to connect board, electrodes and 
 
 This is an example of data collected for calibration purpose:
 
-<p align="center"><img src="./images/calibration_exmaple.png" height="400"></p>
+<p align="center"><img src="./images/calibration_example.png" height="400"></p>
 
 After the calibration process, thresholds will be saved in the `matlab` folder. You can use the TCP remote network functionality of Intan RHX software in order to stream collected data in real time to matlab. You can run `RealTime.m` matlab code to receive this data through TCP, process it and simulate keyboards inputs to control the KirbEEG game. **Be sure to select the correct channels in line of `RealTime.m`**.
 

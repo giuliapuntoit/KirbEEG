@@ -60,7 +60,7 @@ meanp2_30_60 = mean(power(2, (idx30:idx60)))
 meanp2_60_90 = mean(power(2, (idx60:idx90)))
 meanp2_30_90 = mean(power(2, (idx30:idx90)))
 
-% Algo to define control threshold HERE
+% Define control threshold
 
 player1_threshold_up = meanp1_30_60;
 player1_threshold_down = meanp1_60_90;

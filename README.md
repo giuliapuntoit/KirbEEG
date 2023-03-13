@@ -31,9 +31,9 @@ You can control the game keyboards input. We use "space" and "up" for single pla
 
 When started, the 2-player game should look like this:
 
-<p align="center"><img src="./welcome.png" height="400"></p>
+<p align="center"><img src="./images/welcome.png" height="400"></p>
 
-<p align="center"><img src="./2players.png" height="400"></p>
+<p align="center"><img src="./images/2players.png" height="400"></p>
 
 ## EEG-controlled game
 
